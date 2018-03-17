@@ -1,31 +1,77 @@
 
 import java.io.*;
 import java.util.Vector;
-
+import java.util.regex.*;
 
 public class wc {
-    File source;
+    //File source;
+    public static Vector<File> source;
     String outpath;
     public static int flag;
     private File outfile;
     private static OutputStream output;
 
 
-    public wc(File source,String outpath) throws IOException{
+    public wc(Vector<File> source,String outpath) throws IOException{
         this.source=source;
         this.outpath=outpath;
         this.outfile=new File(outpath);
         this.output=new FileOutputStream(outfile);
     }
     public void count(Vector<String> parameters) throws IOException{
-        if(parameters.contains("-c"))
-        {flag=1;countall(source);}
-        if(parameters.contains("-w"))
-        {flag=2;countall(source);}
-        if(parameters.contains("-l"))
-        {flag=3;countall(source);}
+        for(int i=0;i<source.size();i++) {
+
+            if (parameters.contains("-c")) {
+                flag = 1;
+                countall(source.get(i));
+            }
+            if (parameters.contains("-w")) {
+                flag = 2;
+                countall(source.get(i));
+            }
+            if (parameters.contains("-l")) {
+                flag = 3;
+                countall(source.get(i));
+            }
+            if(parameters.contains("-a")){
+                complex(source.get(i));
+            }
 //        countall(source);
+        }
     }
+
+    public static void complex(File filename) throws IOException{
+        InputStreamReader reader=null;
+        int codeline=0;
+        int nullline=0;
+        int zhushiline=0;//英文词汇不够，这里是汉语拼音
+        try{
+            reader=new InputStreamReader(new FileInputStream(filename));
+            BufferedReader br=new BufferedReader(reader);
+            while(br.read()!=-1){
+                String s=br.readLine();
+                //if(s=="\n") nullline+=1;//空,这里错了，没审题，还是换成正则表达式方便一些
+                if(Pattern.matches("//.*",s)||Pattern.matches("\\s*.{0,1}\\s*//.*",s)){
+                    zhushiline+=1;
+                    continue;
+                }
+                else if(s==null||Pattern.matches("\\s*.{0,1}\\s*",s)){
+                    nullline+=1;
+                    continue;
+                }
+                else{
+                    codeline+=1;
+                    continue;
+                }
+            }
+            reader.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        String result_complex=filename.getName()+",代码行/空行/注释行："+codeline+"/"+nullline+"/"+zhushiline+"\r\n";
+        output.write(result_complex.getBytes());
+    }
+
     public static void countall(File filename) throws IOException{
         InputStreamReader reader=null;
         int countChar=0;
@@ -61,4 +107,6 @@ public class wc {
                 break;
         }
     }
+
+
 }
