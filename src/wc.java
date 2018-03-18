@@ -89,12 +89,14 @@ public class wc {
                 //output.write(s.getBytes());
                 //System.out.println(s.getBytes());
                 countChar+=s.length();
+                String list[]=s.split(" |,");
+                for(int ff=0;ff<list.length;ff++){
                 if(stoplists.isEmpty()) {
-                    countword += s.split(" |,").length;
+                    if(!Pattern.matches("\\s*",list[ff])){countword++;}
                 }
                 else{
-                    String list[]=s.split(" |,");
-                    for(int ff=0;ff<list.length;ff++){
+
+
                         if((!stoplists.contains(list[ff].toLowerCase()))&&!Pattern.matches("\\s*",list[ff])){
                             countword++;
                             //output.write(list[ff].getBytes());
@@ -110,7 +112,7 @@ public class wc {
         }
         switch (flag){
             case 1:
-                countChar=countChar-1;//这里-1的原因是会把最后一行的\n算进去
+                //countChar=countChar;//这里-1的原因是会把最后一行的\n算进去
                 String result=filename.getName()+",字符数："+countChar+"\r\n";
                 output.write(result.getBytes());
                 break;

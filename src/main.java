@@ -55,6 +55,8 @@ public class main {
             }
             else if(args[i].equals("-s")){
                 m=false;
+                i++;
+                nowpath=args[i].substring(0,args[i].indexOf("*")-1);
                 String mark=args[i].substring(args[i].indexOf("."));//什么类型的文件
                 find(nowpath,mark);//在当前目录找
             }
@@ -65,7 +67,7 @@ public class main {
     }
 
     public static void find(String nowpath,String mark){
-        File f=new File(nowpath);
+        File f=new File(nowpath+"\\");
         File nowf=new File("");
         File filelist[]=f.listFiles();
         if(filelist==null) {System.out.println("目录为空");return;}
