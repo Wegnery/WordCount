@@ -6,17 +6,19 @@ import java.util.regex.*;
 public class wc {
     //File source;
     public static Vector<File> source;
+    public static Vector<String> stoplists;
     String outpath;
     public static int flag;
     private File outfile;
     private static OutputStream output;
 
 
-    public wc(Vector<File> source,String outpath) throws IOException{
+    public wc(Vector<File> source,String outpath,Vector<String> stoplists) throws IOException{
         this.source=source;
         this.outpath=outpath;
         this.outfile=new File(outpath);
         this.output=new FileOutputStream(outfile);
+        this.stoplists=stoplists;
     }
     public void count(Vector<String> parameters) throws IOException{
         for(int i=0;i<source.size();i++) {
@@ -73,6 +75,7 @@ public class wc {
     }
 
     public static void countall(File filename) throws IOException{
+
         InputStreamReader reader=null;
         int countChar=0;
         int countword=0;
@@ -81,12 +84,26 @@ public class wc {
 
             reader=new InputStreamReader(new FileInputStream(filename));
             BufferedReader br=new BufferedReader(reader);
-            while(br.read()!=-1){
+            do{
                 String s=br.readLine();
+                //output.write(s.getBytes());
+                //System.out.println(s.getBytes());
                 countChar+=s.length();
-                countword+=s.split(" ").length;
+                if(stoplists.isEmpty()) {
+                    countword += s.split(" |,").length;
+                }
+                else{
+                    String list[]=s.split(" |,");
+                    for(int ff=0;ff<list.length;ff++){
+                        if((!stoplists.contains(list[ff].toLowerCase()))&&!Pattern.matches("\\s*",list[ff])){
+                            countword++;
+                            //output.write(list[ff].getBytes());
+                            //output.write(stoplists.get(0).getBytes());
+                        }
+                    }
+                }
                 countline++;
-            }
+            }while(br.read()!=-1);
             reader.close();
         }catch (Exception e){
             e.printStackTrace();
@@ -98,6 +115,7 @@ public class wc {
                 output.write(result.getBytes());
                 break;
             case 2:
+                //countword=countword-2;
                 String result1=filename.getName()+",单词数："+countword+"\r\n";
                 output.write(result1.getBytes());
                 break;
