@@ -1,0 +1,29 @@
+注：我不会写代码测试，以下是我用.exe在控制台进行测试的一些记录。
+ 1.wc.exe -a file.c
+ 2 wc.exe -w file.c
+ 3 wc.exe -c file.c
+ 4 wc.exe -l file.c
+ 5 //-*功能单独测试
+ 6 wc.exe -a h.c
+ 7 //不存在文件的测试【文件打不开情况】
+ 8 wc.exe -a
+ 9 //没有加源文件的情况
+10 wc.exe -a -s E:\SQ\WordCount\BIN\test\*.c
+11 wc.exe -w -s E:\SQ\WordCount\BIN\test\*.c
+12 wc.exe -c -s E:\SQ\WordCount\BIN\test\*.c
+13 wc.exe -l -s E:\SQ\WordCount\BIN\test\*.c
+14 //以上为-* -s组合测试测试
+15 E:\SQ\WordCount\BIN>wc.exe -w -c -l -a -s E:\SQ\WordCount\BIN\test\*.c
+16 //上面为集体测试
+17 wc.exe -l -s E:\SQ\WordCount\BIN\asdad\*.c
+18 //以上为不存在文件目录的测试【asdad不存在】
+19 wc.exe -l -s E:\SQ\WordCount\BIN\*.c
+20 //存在嵌套文件的情况【BIN中有test文件夹】
+21 E:\SQ\WordCount\BIN>wc.exe -e stop.txt -o testo.txt
+22 //以上虽然没有输出但是至少证明了程序没毛病。
+23 E:\SQ\WordCount\BIN>wc.exe -e stop.txt -o testo.txt -a file.c
+24 //程序有输出了
+25 E:\SQ\WordCount\BIN>wc.exe -e stopaaaa.txt -o testo.txt -a file.c
+26 //停用词文件找不到的情况
+27 E:\SQ\WordCount\BIN>wc.exe -e stop.txt -o -a file.c
+28 //-o后面没有加输出文件的情况

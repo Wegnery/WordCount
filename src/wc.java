@@ -53,7 +53,7 @@ public class wc {
             while(br.read()!=-1){
                 String s=br.readLine();
                 //if(s=="\n") nullline+=1;//空,这里错了，没审题，还是换成正则表达式方便一些
-                if(Pattern.matches("//.*",s)||Pattern.matches("\\s*.{0,1}\\s*//.*",s)){
+                if(Pattern.matches("//.*",s)||Pattern.matches("\\s*.{0,1}\\s*//.*",s)||Pattern.matches("([\\S]?/[/*][\\S]*)|\\*/\n",s)){
                     zhushiline+=1;
                     continue;
                 }
